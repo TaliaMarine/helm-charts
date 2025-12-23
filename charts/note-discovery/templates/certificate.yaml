@@ -1,0 +1,25 @@
+{{- if and .Values.certificate.enabled .Values.ingress.enabled .Values.ingress.tls -}}
+{{- $root := . -}}
+{{- range $i, $tls := .Values.ingress.tls }}
+{{- $secretName := (default (printf "%s-tls-%d" (include "note-discovery.fullname" $root) $i) $tls.secretName) -}}
+{{- if $tls.hosts }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ $secretName | quote }}
+  labels:
+    {{- include "note-discovery.labels" $root | nindent 4 }}
+  {{- with $root.Values.certificate.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  secretName: {{ $secretName | quote }}
+  issuerRef:
+    {{- toYaml $root.Values.certificate.issuerRef | nindent 4 }}
+  dnsNames:
+    {{- toYaml $tls.hosts | nindent 4 }}
+{{- end }}
+{{- end }}
+{{- end }}

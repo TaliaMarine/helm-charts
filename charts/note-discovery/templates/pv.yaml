@@ -1,0 +1,28 @@
+{{- if .Values.pv.enabled -}}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ default (printf "%s-pv" (include "note-discovery.fullname" .)) .Values.pv.name | quote }}
+  labels:
+    {{- include "note-discovery.labels" . | nindent 4 }}
+    {{- with .Values.pv.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.pv.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  capacity:
+    storage: {{ .Values.pv.capacity.storage | quote }}
+  accessModes:
+    {{- toYaml .Values.pv.accessModes | nindent 4 }}
+  persistentVolumeReclaimPolicy: {{ .Values.pv.persistentVolumeReclaimPolicy }}
+  {{- with .Values.pv.storageClassName }}
+  storageClassName: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.pv.csi }}
+  csi:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
