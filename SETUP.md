@@ -53,6 +53,26 @@ Ensure workflows can publish releases/branches:
 - **Settings → Actions → General → Workflow permissions**
   - Select **Read and write permissions**
 
+## Release Please authentication (GitHub App, no PAT)
+
+Your organization currently blocks GitHub Actions from creating PRs with the default `GITHUB_TOKEN`.
+To use Release Please without a PAT, use a **GitHub App**.
+
+### Option: Install the Release Please GitHub App (recommended)
+
+1. Install the GitHub App:
+   - https://github.com/apps/release-please
+2. During installation, grant it access to **TaliaMarine/helm-charts**.
+3. In the App settings, generate a **private key**.
+4. Add these repository secrets in **Settings → Secrets and variables → Actions**:
+
+   - `RELEASE_PLEASE_APP_ID` (the App ID)
+   - `RELEASE_PLEASE_PRIVATE_KEY` (paste the full PEM private key)
+
+The workflow `.github/workflows/release-please.yaml` will generate an installation token at runtime and use it to open Release PRs and create GitHub Releases.
+
+> If your org has additional restrictions, also ensure in **Settings → Actions → General → Workflow permissions** that workflows have **Read and write permissions**.
+
 ## Charts
 
 - `note-discovery`

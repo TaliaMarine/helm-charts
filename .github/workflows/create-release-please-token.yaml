@@ -1,0 +1,30 @@
+name: (Optional) Create Release Please token
+
+"on":
+  workflow_dispatch: {}
+
+permissions: {}
+
+jobs:
+  info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: How to configure a GitHub App token for Release Please
+        shell: bash
+        run: |
+          cat <<'EOF'
+          This workflow is intentionally informational.
+
+          To avoid using a PAT, configure a GitHub App (recommended: https://github.com/apps/release-please)
+          and provide its credentials as repo secrets.
+
+          Required secrets:
+            - RELEASE_PLEASE_APP_ID
+            - RELEASE_PLEASE_PRIVATE_KEY
+
+          Then the main Release Please workflow (.github/workflows/release-please.yaml)
+          will generate an installation token and use it to open PRs and create Releases.
+
+          See SETUP.md for step-by-step instructions.
+          EOF
+
