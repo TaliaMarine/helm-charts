@@ -7,4 +7,3 @@ Mainly for personal use but feel free to use it as well and contribute!
 ## Charts
 
 - [NoteDiscovery](charts/note-discovery/README.md): A Helm chart for deploying the Note Discovery application.
-- 
