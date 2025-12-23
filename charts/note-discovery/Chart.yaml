@@ -23,5 +23,3 @@ version: 0.0.1
 # It is recommended to use it with quotes.
 appVersion: "0.10.3"
 
-# A URL to an SVG or PNG image to be used as an icon (optional but recommended).
-icon: icon.svg
