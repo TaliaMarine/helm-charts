@@ -1,10 +1,14 @@
 name: Release Helm Charts
 
 on:
+  # Primary path: when Release Please publishes a GitHub Release/tag.
+  release:
+    types: [published]
+  # Fallback/manual (e.g., if you prefer to bump Chart.yaml manually).
   push:
     branches: [ main ]
     paths:
-      - 'charts/**'
+      - 'charts/**/Chart.yaml'
       - '.github/workflows/release-charts.yaml'
   workflow_dispatch: {}
 
@@ -35,4 +39,3 @@ jobs:
           charts_dir: charts
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-

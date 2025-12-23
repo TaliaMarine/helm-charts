@@ -1,6 +1,6 @@
 name: Lint Helm Charts
 
-"on":
+on:
   pull_request:
     paths:
       - "charts/**"
