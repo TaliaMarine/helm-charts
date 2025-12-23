@@ -15,12 +15,22 @@ helm install note-discovery talia-marine/note-discovery
 
 ## Publishing / releasing charts (GitHub Pages)
 
-1. Bump the chart version in `charts/<chart>/Chart.yaml` (`version:` field).
-2. Merge to `main`.
-3. The workflow will:
-   - package the chart (`.tgz`)
-   - create or update a GitHub Release
-   - publish/update `index.yaml` on the `gh-pages` branch
+This repo uses **Release Please** (https://github.com/googleapis/release-please) to automatically manage chart versions.
+
+### How it works
+
+1. When you merge changes to `main`, Release Please opens/updates a **Release PR**.
+2. When you merge the Release PR, Release Please creates a **GitHub Release** (tag).
+3. The `release-charts.yaml` workflow runs on that release and publishes the Helm repo:
+   - packages the chart(s)
+   - updates `index.yaml` on the `gh-pages` branch
+
+### Releasing a new chart version
+
+1. Merge your normal PR(s) into `main`.
+2. Review and merge the automatically created **Release PR**.
+
+That’s it — you do **not** manually edit `Chart.yaml` versions.
 
 ## One-time GitHub configuration
 

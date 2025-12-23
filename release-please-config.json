@@ -1,0 +1,11 @@
+{
+  "release-type": "simple",
+  "include-component-in-tag": true,
+  "include-v-in-tag": false,
+  "packages": {
+    "charts/note-discovery": {
+      "component": "note-discovery",
+      "release-type": "helm"
+    }
+  }
+}
