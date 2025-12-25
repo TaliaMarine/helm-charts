@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/TaliaMarine/helm-charts/compare/note-discovery-0.0.3...note-discovery-0.0.4) (2025-12-25)
+
+
+### Bug Fixes
+
+* remove test, will need to find better way (it renders when used with kustomize/helm) also add TZ/env ([c991148](https://github.com/TaliaMarine/helm-charts/commit/c99114806d9626a42061f605671e864e04364af2))
+
 ## [0.0.3](https://github.com/TaliaMarine/helm-charts/compare/note-discovery-0.0.2...note-discovery-0.0.3) (2025-12-23)
 
 
