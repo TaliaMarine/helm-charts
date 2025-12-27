@@ -1,10 +1,6 @@
 name: Release Helm Charts
 
 on:
-  # Primary path: when Release Please publishes a GitHub Release/tag.
-  release:
-    types: [published]
-  # Fallback/manual (e.g., if you prefer to bump Chart.yaml manually).
   push:
     branches: [ main ]
     paths:
