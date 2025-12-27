@@ -14,7 +14,6 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
 
 concurrency:
   group: release-charts-${{ github.event.release.tag_name || inputs.tag || github.run_id }}
@@ -45,6 +44,8 @@ jobs:
         uses: helm/chart-releaser-action@v1.6.0
         with:
           charts_dir: charts
+          # This is what actually publishes the Helm repository (index.yaml) to GitHub Pages.
+          # Without this, you get GitHub releases but no updated Helm repo.
           pages_branch: gh-pages
           packages_with_index: true
         env:
