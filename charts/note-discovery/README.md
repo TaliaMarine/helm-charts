@@ -7,5 +7,5 @@ Website: https://github.com/gamosoft/NoteDiscovery
 Example usage:
 
 ```bash
-TDB...
+TDB......
 ```

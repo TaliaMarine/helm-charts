@@ -5,11 +5,13 @@
   "packages": {
     "charts/note-discovery": {
       "component": "note-discovery",
-      "release-type": "helm"
+      "release-type": "helm",
+      "skip-github-release": true
     },
     "charts/linkwarden": {
       "component": "linkwarden",
-      "release-type": "helm"
+      "release-type": "helm",
+      "skip-github-release": true
     }
   }
 }
