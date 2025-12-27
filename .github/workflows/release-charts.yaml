@@ -4,7 +4,12 @@ on:
   # Primary path: when Release Please publishes a GitHub Release/tag.
   release:
     types: [published]
-  # Manual trigger (e.g., to re-publish packages for an existing release).
+  # Fallback/manual (e.g., if you prefer to bump Chart.yaml manually).
+  push:
+    branches: [ main ]
+    paths:
+      - 'charts/**/Chart.yaml'
+      - '.github/workflows/release-charts.yaml'
   workflow_dispatch: {}
 
 permissions:
