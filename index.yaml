@@ -116,6 +116,16 @@ entries:
   note-discovery:
   - apiVersion: v2
     appVersion: 0.10.3
+    created: "2025-12-27T18:10:39.3237967Z"
+    description: A Helm chart for Kubernetes for note-discovery
+    digest: 9e5436209bf8b45d5812db47c3d6951c83f0ceefec1c2ed45d95570a29a5c871
+    name: note-discovery
+    type: application
+    urls:
+    - note-discovery-0.0.6.tgz
+    version: 0.0.6
+  - apiVersion: v2
+    appVersion: 0.10.3
     created: "2025-12-25T19:06:10.679586417Z"
     description: A Helm chart for Kubernetes for note-discovery
     digest: c970b6127fb00a0a6277cff08c9c301dad3ef8d160058d8f95427305ba9c7e44
@@ -134,4 +144,4 @@ entries:
     urls:
     - https://github.com/TaliaMarine/helm-charts/releases/download/note-discovery-0.0.3/note-discovery-0.0.3.tgz
     version: 0.0.3
-generated: "2025-12-27T17:24:38.785294512Z"
+generated: "2025-12-27T18:10:39.323812429Z"
