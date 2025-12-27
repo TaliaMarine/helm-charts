@@ -10,6 +10,8 @@ The purpose is to fix SSO with Authentik using existing secret.
 The version 0.3.5+ here contains an extra check of existentSecret, if set it does not try to set clientId/clientSecret from values.yaml (which is not very secure).
 And version 0.3.6+ adds an extra fix on the config map so it generates the issuer.
 
+...
+
 # FMJ Studios - Linkwarden Helm Chart <img src="https://raw.githubusercontent.com/linkwarden/linkwarden/4640c1c966d37b7fc22e4ebfcb244d03da1d6d82/assets/logo.png" alt="Linkwarden Logo" width="175" height="175" align="right" loading="lazy">
 
 Linkwarden is a self-hosted, open-source collaborative bookmark manager to collect, organize and archive web pages. The
