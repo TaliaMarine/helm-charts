@@ -5,24 +5,17 @@ on:
   release:
     types: [published]
   # Manual trigger (e.g., to re-publish packages for an existing release).
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: "Release tag to (re)publish (e.g. linkwarden-0.3.6)"
-        required: false
-        type: string
+  workflow_dispatch: {}
 
 permissions:
   contents: write
 
 concurrency:
-  group: release-charts-${{ github.event.release.tag_name || inputs.tag || github.run_id }}
+  group: release-charts
   cancel-in-progress: false
 
 jobs:
   release:
-    # Only auto-run for releases created by Release Please to avoid collisions with manually created releases.
-    if: ${{ github.event_name != 'release' || github.event.release.author.login == 'release-please[bot]' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -45,11 +38,5 @@ jobs:
         uses: helm/chart-releaser-action@v1.6.0
         with:
           charts_dir: charts
-          # This is what actually publishes the Helm repository (index.yaml) to GitHub Pages.
-          # Without this, you get GitHub releases but no updated Helm repo.
-          pages_branch: gh-pages
-          packages_with_index: true
-          # Release Please already created the GitHub Release for this tag, so don't fail trying to create it again.
-          skip_existing: true
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
