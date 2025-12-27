@@ -6,6 +6,10 @@
     "charts/note-discovery": {
       "component": "note-discovery",
       "release-type": "helm"
+    },
+    "charts/linkwarden": {
+      "component": "linkwarden",
+      "release-type": "helm"
     }
   }
 }
