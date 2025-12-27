@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.7](https://github.com/TaliaMarine/helm-charts/compare/note-discovery-0.0.6...note-discovery-0.0.7) (2025-12-27)
+
+
+### Bug Fixes
+
+* releaases ([2fcdd17](https://github.com/TaliaMarine/helm-charts/commit/2fcdd17fbafee349c5f730979e02bcade8cda7cc))
+
 ## [0.0.4](https://github.com/TaliaMarine/helm-charts/compare/note-discovery-0.0.3...note-discovery-0.0.4) (2025-12-25)
 
 
