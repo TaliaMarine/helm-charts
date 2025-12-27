@@ -1,7 +1,7 @@
 name: Release Helm Charts
 
 on:
-  # Primary path: when any GitHub Release/tag is published.
+  # Primary path: when Release Please publishes a GitHub Release/tag.
   release:
     types: [published]
   # Manual trigger (e.g., to re-publish packages for an existing release).
@@ -21,7 +21,8 @@ concurrency:
 
 jobs:
   release:
-    # Always run for any published release (manual or automated).
+    # Only auto-run for releases created by Release Please to avoid collisions with manually created releases.
+    if: ${{ github.event_name != 'release' || github.event.release.author.login == 'release-please[bot]' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -48,5 +49,7 @@ jobs:
           # Without this, you get GitHub releases but no updated Helm repo.
           pages_branch: gh-pages
           packages_with_index: true
+          # Release Please already created the GitHub Release for this tag, so don't fail trying to create it again.
+          skip_existing: true
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
