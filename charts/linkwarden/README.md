@@ -5,6 +5,8 @@ helm repo add taliamarine https://taliamarine.github.io/helm-charts/
 helm install linkwarden taliamarine/linkwarden --version X.Y.Z
 ```
 
+The purpose is to fix SSO with Authentik using existing secret.
+
 # FMJ Studios - Linkwarden Helm Chart <img src="https://raw.githubusercontent.com/linkwarden/linkwarden/4640c1c966d37b7fc22e4ebfcb244d03da1d6d82/assets/logo.png" alt="Linkwarden Logo" width="175" height="175" align="right" loading="lazy">
 
 Linkwarden is a self-hosted, open-source collaborative bookmark manager to collect, organize and archive web pages. The
