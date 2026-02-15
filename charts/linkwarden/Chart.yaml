@@ -2,10 +2,10 @@
 # SPDX-License-Identifier: MIT
 
 apiVersion: v2
-appVersion: 2.5.3
+appVersion: 2.13.5
 kubeVersion: ">=1.26.0-0"
 name: linkwarden
-version: 0.3.7
+version: 0.3.8
 dependencies:
   - name: postgresql
     repository: oci://registry-1.docker.io/bitnamicharts
