@@ -27,6 +27,62 @@ entries:
       org.opencontainers.image.vendor: FMJ Studios
     apiVersion: v2
     appVersion: 2.13.5
+    created: "2026-03-14T14:52:01.468840205Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: ~15.5
+    description: Linkwarden is an open-source collaborative bookmark manager to collect,
+      organize and preserve webpages
+    digest: eb506e318de02735432ecbd851f8f0f87bda79f3b6301c7de5ca49a06fbaa2ac
+    home: https://linkwarden.app/
+    icon: https://raw.githubusercontent.com/linkwarden/linkwarden/4640c1c966d37b7fc22e4ebfcb244d03da1d6d82/assets/logo.png
+    keywords:
+    - bookmarks
+    - archival
+    - collaboration
+    - linkding
+    - linkace
+    - archivebox
+    kubeVersion: '>=1.26.0-0'
+    maintainers:
+    - email: info@fmj.studio
+      name: fmjstudios
+    - email: info@fmj.dev
+      name: FMJdev
+    name: linkwarden
+    sources:
+    - https://github.com/fmjstudios/helm
+    urls:
+    - https://github.com/TaliaMarine/helm-charts/releases/download/linkwarden-0.3.9/linkwarden-0.3.9.tgz
+    version: 0.3.9
+  - annotations:
+      artifacthub.io/category: storage
+      artifacthub.io/changes: |
+        - kind: removed
+          description: convert 'existingSecret' from object to string and fixed key to 'uri'
+      artifacthub.io/images: |
+        - name: linkwarden
+          image: ghcr.io/linkwarden/linkwarden:v2.5.3
+      artifacthub.io/license: MIT
+      artifacthub.io/links: |
+        - name: Source
+          url: https://github.com/fmjstudios/helm
+        - name: Support
+          url: https://github.com/fmjstudios/helm/issues
+        - name: Linkwarden Homepage
+          url: https://linkwarden.app/
+        - name: Linkwarden Documentation
+          url: https://docs.linkwarden.app/
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/signKey: |
+        fingerprint: 654213659810F05D16A7EDECB6C4D653E669D643
+        url: https://keys.openpgp.org/vks/v1/by-fingerprint/654213659810F05D16A7EDECB6C4D653E669D643
+      org.opencontainers.image.licenses: MIT
+      org.opencontainers.image.vendor: FMJ Studios
+    apiVersion: v2
+    appVersion: 2.13.5
     created: "2026-02-15T13:42:06.728299311Z"
     dependencies:
     - condition: postgresql.enabled
@@ -227,6 +283,16 @@ entries:
     version: 0.3.3
   note-discovery:
   - apiVersion: v2
+    appVersion: 0.17.0
+    created: "2026-03-14T14:52:01.648964842Z"
+    description: A Helm chart for Kubernetes for note-discovery
+    digest: 75b275cb4f98ec9bb03f806ec0ea7a3f110c7b0fc0a9dcbf8084fe7981d8b4ae
+    name: note-discovery
+    type: application
+    urls:
+    - https://github.com/TaliaMarine/helm-charts/releases/download/note-discovery-0.0.9/note-discovery-0.0.9.tgz
+    version: 0.0.9
+  - apiVersion: v2
     appVersion: 0.16.0
     created: "2026-02-15T13:42:06.893036612Z"
     description: A Helm chart for Kubernetes for note-discovery
@@ -266,4 +332,4 @@ entries:
     urls:
     - https://github.com/TaliaMarine/helm-charts/releases/download/note-discovery-0.0.3/note-discovery-0.0.3.tgz
     version: 0.0.3
-generated: "2026-02-15T13:42:06.893068683Z"
+generated: "2026-03-14T14:52:01.649000178Z"
