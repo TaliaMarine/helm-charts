@@ -3,6 +3,19 @@ entries:
   linkwarden:
   - apiVersion: v2
     appVersion: 2.13.5
+    created: "2026-06-06T13:38:15.232591029Z"
+    description: Linkwarden is an open-source collaborative bookmark manager to collect,
+      organize and preserve webpages
+    digest: 1f8dd51187ace327b01ceee4b3079b7386e56fab89ec447855244f9402701b28
+    home: https://linkwarden.app/
+    icon: https://raw.githubusercontent.com/linkwarden/linkwarden/4640c1c966d37b7fc22e4ebfcb244d03da1d6d82/assets/logo.png
+    kubeVersion: '>=1.26.0-0'
+    name: linkwarden
+    urls:
+    - https://github.com/TaliaMarine/helm-charts/releases/download/linkwarden-0.8.0/linkwarden-0.8.0.tgz
+    version: 0.8.0
+  - apiVersion: v2
+    appVersion: 2.13.5
     created: "2026-06-06T12:09:27.621214509Z"
     description: Linkwarden is an open-source collaborative bookmark manager to collect,
       organize and preserve webpages
@@ -345,4 +358,4 @@ entries:
     urls:
     - https://github.com/TaliaMarine/helm-charts/releases/download/note-discovery-0.0.3/note-discovery-0.0.3.tgz
     version: 0.0.3
-generated: "2026-06-06T12:09:27.621253513Z"
+generated: "2026-06-06T13:38:15.232609216Z"
