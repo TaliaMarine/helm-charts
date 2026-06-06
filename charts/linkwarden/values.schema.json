@@ -204,25 +204,15 @@
                 "database": {
                     "type": "object",
                     "properties": {
-                        "host": {
-                            "type": "string",
-                            "description": "The hostname (FQDN) for the PostgreSQL instance",
-                            "default": "\"\""
-                        },
-                        "port": {
-                            "type": "number",
-                            "description": "The port for the PostgreSQL instance",
-                            "default": "5432"
-                        },
-                        "name": {
-                            "type": "string",
-                            "description": "The name for the PostgreSQL database",
-                            "default": "linkwarden"
-                        },
                         "existingSecret": {
                             "type": "string",
-                            "description": "The name of an existing secret containing the database credentials under the keys `username` and `password`",
+                            "description": "The name of an existing secret containing the full PostgreSQL connection URL",
                             "default": "\"\""
+                        },
+                        "urlKey": {
+                            "type": "string",
+                            "description": "The key within `existingSecret` that holds the complete PostgreSQL connection URL. Defaults to `uri`, matching operators such as CloudNativePG and Crunchy PGO",
+                            "default": "uri"
                         }
                     }
                 },

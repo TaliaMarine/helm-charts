@@ -11,10 +11,8 @@ linkwarden:
   #        existingClaim: linkwarden-pvc
 
   database:
-    host: "postgres.database.svc.cluster.local"
-    port: 5432
-    name: "linkwarden"
     existingSecret: "linkwarden-db"
+    urlKey: "uri"
 
   auth:
     disableRegistration: false

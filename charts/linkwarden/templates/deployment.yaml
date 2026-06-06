@@ -65,18 +65,11 @@ spec:
                   name: {{ .Values.linkwarden.data.s3.existingSecret }}
                   key: secretKey
             {{- end }}
-            - name: DATABASE_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "linkwarden.db.secretName" . }}
-                  key: username
-            - name: DATABASE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "linkwarden.db.secretName" . }}
-                  key: password
             - name: DATABASE_URL
-              value: "postgresql://$(DATABASE_USERNAME):$(DATABASE_PASSWORD)@{{ include "linkwarden.db.fqdn" . }}:{{ include "linkwarden.db.port" . }}/{{ include "linkwarden.db.name" . }}"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "linkwarden.db.secretName" . }}
+                  key: {{ .Values.linkwarden.database.urlKey | default "uri" }}
             {{/* Authentication settings */}}
             {{- range $_, $v := .Values.linkwarden.auth.sso -}}
             {{- $providerArg := (dict "provider" $v.provider) -}}

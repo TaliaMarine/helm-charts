@@ -33,10 +33,7 @@
 {{- fail "You must provide '.Values.linkwarden.nextAuthSecret.existingSecret.name' - the NextAuth secret can only be supplied through an existing Kubernetes Secret." }}
 {{- end }}
 {{- if not .Values.linkwarden.database.existingSecret }}
-{{- fail "You must provide '.Values.linkwarden.database.existingSecret' containing the keys username and password - database credentials can only be supplied through an existing Kubernetes Secret." }}
-{{- end }}
-{{- if not .Values.linkwarden.database.host }}
-{{- fail "You must provide '.Values.linkwarden.database.host' with the FQDN of your externally provisioned PostgreSQL instance." }}
+{{- fail "You must provide '.Values.linkwarden.database.existingSecret' containing the full PostgreSQL connection URL - the database connection can only be supplied through an existing Kubernetes Secret." }}
 {{- end }}
 {{- if eq .Values.linkwarden.data.storageType "s3" }}
 {{- if not .Values.linkwarden.data.s3.existingSecret }}
