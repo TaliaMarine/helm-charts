@@ -1,7 +1,9 @@
 linkwarden:
   domain: "linkwarden.helm.private"
   nextAuthSecret:
-    value: "PretendThisIsARandomString"
+    existingSecret:
+      name: "linkwarden-nextauth"
+      key: "token"
   ignoreUnauthorizedCA: true
   #  data:
   #    filesystem:
@@ -9,10 +11,10 @@ linkwarden:
   #        existingClaim: linkwarden-pvc
 
   database:
-    user: "linkwarden"
-    password: "linkwarden"
+    host: "postgres.database.svc.cluster.local"
     port: 5432
     name: "linkwarden"
+    existingSecret: "linkwarden-db"
 
   auth:
     disableRegistration: false
@@ -22,8 +24,7 @@ linkwarden:
 #      - provider: "authentik"
 #        customName: "authentik-custom"
 #        issuer: "authentik"
-#        clientId: "someId"
-#        clientSecret: "someSecret"
+#        existingSecret: "authentik-creds"
 
 ingress:
   enabled: true
@@ -44,11 +45,3 @@ readinessProbe:
 startupProbe:
   enabled: true
 
-postgresql:
-  enabled: true
-  auth:
-    enablePostgresUser: true
-    postgresPassword: "postgres"
-    username: "linkwarden"
-    password: "linkwarden"
-    database: "linkwarden"

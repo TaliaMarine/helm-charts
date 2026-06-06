@@ -64,11 +64,6 @@
                 "nextAuthSecret": {
                     "type": "object",
                     "properties": {
-                        "value": {
-                            "type": "string",
-                            "description": "A secret string to encrypt JWTs and hash email verification tokens",
-                            "default": "\"\""
-                        },
                         "existingSecret": {
                             "type": "object",
                             "properties": {
@@ -80,7 +75,7 @@
                                 "key": {
                                     "type": "string",
                                     "description": "The key within before mentioned secret containing the actual string",
-                                    "default": "\"\""
+                                    "default": "token"
                                 }
                             }
                         }
@@ -197,16 +192,6 @@
                                     "description": "Use path-style bucket addresses instead of AWS' DNS subdomain style",
                                     "default": "false"
                                 },
-                                "accessKey": {
-                                    "type": "string",
-                                    "description": "The S3 Access Key, to be used within a Kubernetes secret",
-                                    "default": "\"\""
-                                },
-                                "secretKey": {
-                                    "type": "string",
-                                    "description": "The S3 Secret Key, to be used within a Kubernetes secret",
-                                    "default": "\"\""
-                                },
                                 "existingSecret": {
                                     "type": "string",
                                     "description": "The name of an existing Secret with `accessKey` and `secretKey` keys",
@@ -219,39 +204,24 @@
                 "database": {
                     "type": "object",
                     "properties": {
-                        "user": {
-                            "type": "string",
-                            "description": "The user for the PostgreSQL instance - ignored if 'existingSecret' or 'uri' is set",
-                            "default": "linkwarden"
-                        },
-                        "password": {
-                            "type": "string",
-                            "description": "The password to the aforementioned user - ignored if 'existingSecret' or 'uri' is set",
-                            "default": "linkwarden"
-                        },
                         "host": {
                             "type": "string",
-                            "description": "The hostname for the PostgreSQL instance - ignored if 'existingSecret' or 'uri' is set",
+                            "description": "The hostname (FQDN) for the PostgreSQL instance",
                             "default": "\"\""
                         },
                         "port": {
                             "type": "number",
-                            "description": "The port for the PostgreSQL instance - ignored if 'existingSecret' or 'uri' is set",
+                            "description": "The port for the PostgreSQL instance",
                             "default": "5432"
                         },
                         "name": {
                             "type": "string",
-                            "description": "The name for the PostgreSQL database - ignored if 'existingSecret' or 'uri' is set",
+                            "description": "The name for the PostgreSQL database",
                             "default": "linkwarden"
-                        },
-                        "uri": {
-                            "type": "string",
-                            "description": "The URI for the PostgreSQL database - ignored if existingSecret is set",
-                            "default": "\"\""
                         },
                         "existingSecret": {
                             "type": "string",
-                            "description": "The name of the existing secret containing the fully qualified PostgreSQL uri under a `uri` key",
+                            "description": "The name of an existing secret containing the database credentials under the keys `username` and `password`",
                             "default": "\"\""
                         }
                     }
@@ -678,96 +648,6 @@
             "type": "object",
             "description": "General security context settings for",
             "default": {}
-        },
-        "postgresql": {
-            "type": "object",
-            "properties": {
-                "enabled": {
-                    "type": "boolean",
-                    "description": "Enable or disable the PostgreSQL subchart",
-                    "default": true
-                },
-                "auth": {
-                    "type": "object",
-                    "properties": {
-                        "enablePostgresUser": {
-                            "type": "boolean",
-                            "description": "Assign a password to the \"postgres\" admin user. Otherwise, remote access will be blocked for this user",
-                            "default": true
-                        },
-                        "postgresPassword": {
-                            "type": "string",
-                            "description": "Password for the \"postgres\" admin user. Ignored if `auth.existingSecret` is provided",
-                            "default": "postgres"
-                        },
-                        "username": {
-                            "type": "string",
-                            "description": "Name for a custom user to create",
-                            "default": "linkwarden"
-                        },
-                        "password": {
-                            "type": "string",
-                            "description": "Password for the custom user to create. Ignored if `auth.existingSecret` is provided",
-                            "default": "linkwarden"
-                        },
-                        "database": {
-                            "type": "string",
-                            "description": "Name for a custom database to create",
-                            "default": "linkwarden"
-                        },
-                        "usePasswordFiles": {
-                            "type": "boolean",
-                            "description": "Mount credentials as a files instead of using an environment variable",
-                            "default": false
-                        }
-                    }
-                },
-                "primary": {
-                    "type": "object",
-                    "properties": {
-                        "name": {
-                            "type": "string",
-                            "description": "Name of the primary database (eg primary, master, leader, ...)",
-                            "default": "primary"
-                        },
-                        "persistence": {
-                            "type": "object",
-                            "properties": {
-                                "enabled": {
-                                    "type": "boolean",
-                                    "description": "Enable PostgreSQL Primary data persistence using PVC",
-                                    "default": true
-                                },
-                                "existingClaim": {
-                                    "type": "string",
-                                    "description": "Name of an existing PVC to use",
-                                    "default": ""
-                                },
-                                "storageClass": {
-                                    "type": "string",
-                                    "description": "PVC Storage Class for PostgreSQL Primary data volume",
-                                    "default": ""
-                                },
-                                "accessModes": {
-                                    "type": "array",
-                                    "description": "PVC Access Mode for PostgreSQL volume",
-                                    "default": [
-                                        "ReadWriteOnce"
-                                    ],
-                                    "items": {
-                                        "type": "string"
-                                    }
-                                },
-                                "size": {
-                                    "type": "string",
-                                    "description": "PVC Storage Request for PostgreSQL volume",
-                                    "default": "5Gi"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 }

@@ -23,3 +23,30 @@
   {{- end }}
   {{- end }}
 {{- end -}}
+
+{{/*
+  Ensure all credentials are sourced from existing Kubernetes Secrets.
+  Plain text credentials are not supported for security reasons.
+*/}}
+{{- define "linkwarden.checks.credentials" -}}
+{{- if not .Values.linkwarden.nextAuthSecret.existingSecret.name }}
+{{- fail "You must provide '.Values.linkwarden.nextAuthSecret.existingSecret.name' - the NextAuth secret can only be supplied through an existing Kubernetes Secret." }}
+{{- end }}
+{{- if not .Values.linkwarden.database.existingSecret }}
+{{- fail "You must provide '.Values.linkwarden.database.existingSecret' containing the keys username and password - database credentials can only be supplied through an existing Kubernetes Secret." }}
+{{- end }}
+{{- if not .Values.linkwarden.database.host }}
+{{- fail "You must provide '.Values.linkwarden.database.host' with the FQDN of your externally provisioned PostgreSQL instance." }}
+{{- end }}
+{{- if eq .Values.linkwarden.data.storageType "s3" }}
+{{- if not .Values.linkwarden.data.s3.existingSecret }}
+{{- fail "You enabled S3 storage but did not set '.Values.linkwarden.data.s3.existingSecret' containing the keys accessKey and secretKey - S3 credentials can only be supplied through an existing Kubernetes Secret." }}
+{{- end }}
+{{- end }}
+{{- range $_, $v := .Values.linkwarden.auth.sso }}
+{{- if not $v.existingSecret }}
+{{- fail (printf "SSO provider '%s' is missing 'existingSecret' - OAuth credentials can only be supplied through an existing Kubernetes Secret containing the keys clientId and clientSecret." $v.provider) }}
+{{- end }}
+{{- end }}
+{{- end -}}
+

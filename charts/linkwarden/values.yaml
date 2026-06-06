@@ -62,20 +62,19 @@ linkwarden:
   ##
   domain: ""
   ## Used to encrypt the NextAuth.js JWT, and to hash email verification tokens.
+  ## For security reasons this value can ONLY be provided through an existing Kubernetes Secret -
+  ## it cannot be set in plain text within these values.
   ##
   nextAuthSecret:
-    ## @param linkwarden.nextAuthSecret.value [string] A secret string to encrypt JWTs and hash email verification tokens
-    ##
-    value: ""
     ## Fetch the NextAuth secret from an existing Secret
     ##
     existingSecret:
       ## @param linkwarden.nextAuthSecret.existingSecret.name [string] The name of an existing secret containing the secret string
       ##
       name: ""
-      ## @param linkwarden.nextAuthSecret.existingSecret.key [string] The key within before mentioned secret containing the actual string
+      ## @param linkwarden.nextAuthSecret.existingSecret.key [default: token] The key within before mentioned secret containing the actual string
       ##
-      key: ""
+      key: "token"
   ## @param linkwarden.paginationTakeCount [default: 20] The number of links to fetch every time you reach the bottom of the web page
   ##
   paginationTakeCount: 20
@@ -148,39 +147,29 @@ linkwarden:
       ## @param linkwarden.data.s3.forcePathStyle [default: false] Use path-style bucket addresses instead of AWS' DNS subdomain style
       ##
       forcePathStyle: false
-      ## @param linkwarden.data.s3.accessKey [string] The S3 Access Key, to be used within a Kubernetes secret
-      ##
-      accessKey: ""
-      ## @param linkwarden.data.s3.secretKey [string] The S3 Secret Key, to be used within a Kubernetes secret
-      ##
-      secretKey: ""
+      ## The S3 credentials can ONLY be provided through an existing Kubernetes Secret for security reasons.
       ## @param linkwarden.data.s3.existingSecret [string] The name of an existing Secret with `accessKey` and `secretKey` keys
       ##
       existingSecret: ""
 
   ## Linkwarden Database settings
+  ## The database is expected to be provisioned externally (e.g. a managed PostgreSQL service).
+  ## For security reasons the database credentials can ONLY be provided through an existing Kubernetes Secret -
+  ## they cannot be set in plain text within these values.
   ##
   database:
-    ## @param linkwarden.database.user [default: linkwarden] The user for the PostgreSQL instance - ignored if 'existingSecret' or 'uri' is set
-    ##
-    user: "linkwarden"
-    ## @param linkwarden.database.password [default: linkwarden] The password to the aforementioned user - ignored if 'existingSecret' or 'uri' is set
-    ##
-    password: "linkwarden"
-    ## @param linkwarden.database.host [string] The hostname for the PostgreSQL instance - ignored if 'existingSecret' or 'uri' is set
-    ## NOTE: by default the hostname is built from your release name as in 'myrelease-postgresql'
+    ## @param linkwarden.database.host [string] The hostname (FQDN) of the externally provisioned PostgreSQL instance (required)
     ##
     host: ""
-    ## @param linkwarden.database.port [default: 5432] The port for the PostgreSQL instance - ignored if 'existingSecret' or 'uri' is set
+    ## @param linkwarden.database.port [default: 5432] The port for the PostgreSQL instance
     ##
     port: 5432
-    ## @param linkwarden.database.name [default: linkwarden] The name for the PostgreSQL database - ignored if 'existingSecret' or 'uri' is set
+    ## @param linkwarden.database.name [default: linkwarden] The name for the PostgreSQL database
     ##
     name: "linkwarden"
-    ## @param linkwarden.database.uri [string] The URI for the PostgreSQL database - ignored if existingSecret is set
-    ##
-    uri: ""
-    ## @param linkwarden.database.existingSecret [string] The name of the existing secret containing the fully qualified PostgreSQL uri under a `uri` key
+    ## @param linkwarden.database.existingSecret [string] The name of an existing secret containing the database
+    ## credentials under the keys `username` and `password`. The connection URL is assembled as
+    ## `postgresql://username:password@<host>:<port>/<name>` using the (FQDN) host, port and name from these values.
     ##
     existingSecret: ""
 
@@ -202,14 +191,16 @@ linkwarden:
     ## SSO Providers
     ## Officially supported and tested are only Authentik and Keycloak other SSO providers are solely provided for completeness
     ## ref: https://docs.linkwarden.app/self-hosting/sso-oauth
+    ## For security reasons the OAuth credentials can ONLY be provided through an existing Kubernetes Secret per provider.
+    ## The referenced Secret must contain the keys `clientId` and `clientSecret` (and `apiKey` for `bungie` or `tenantId`
+    ## for `fusionauth`). Plain text `clientId`/`clientSecret` values are not supported.
     ## @param linkwarden.auth.sso [array, object] A list of SSO providers to enable within Linkwarden
     ##
     sso: []
     # - provider: "authentik"
     #   customName: "authentik-custom"
     #   issuer: "authentik"
-    #   clientId: "someId"
-    #   clientSecret: "someSecret"
+    #   existingSecret: "authentik-creds"
     # - provider: "keycloak"
     #   customName: "keycloak-custom"
     #   issuer: "keycloak"
@@ -577,66 +568,3 @@ securityContext: {}
 #   drop:
 #     - ALL
 
-## @section Bitnami&reg; PostgreSQL parameters
-##
-
-## PostgreSQL configuration
-## ref: https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml
-postgresql:
-  ## @param postgresql.enabled Enable or disable the PostgreSQL subchart
-  ##
-  enabled: true
-  ## Authentication parameters
-  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#setting-the-root-password-on-first-run
-  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#creating-a-database-on-first-run
-  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#creating-a-database-user-on-first-run
-  ##
-  auth:
-    ## @param postgresql.auth.enablePostgresUser Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user
-    ##
-    enablePostgresUser: true
-    ## @param postgresql.auth.postgresPassword Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided
-    ##
-    postgresPassword: "postgres"
-    ## @param postgresql.auth.username Name for a custom user to create
-    ##
-    username: "linkwarden"
-    ## @param postgresql.auth.password Password for the custom user to create. Ignored if `auth.existingSecret` is provided
-    ##
-    password: "linkwarden"
-    ## @param postgresql.auth.database Name for a custom database to create
-    ##
-    database: "linkwarden"
-    ## @param postgresql.auth.usePasswordFiles Mount credentials as a files instead of using an environment variable
-    ##
-    usePasswordFiles: false
-  ## @section PostgreSQL Primary parameters
-  ##
-  primary:
-    ## @param postgresql.primary.name Name of the primary database (eg primary, master, leader, ...)
-    ##
-    name: primary
-    ## PostgreSQL Primary persistence configuration
-    ##
-    persistence:
-      ## @param postgresql.primary.persistence.enabled Enable PostgreSQL Primary data persistence using PVC
-      ##
-      enabled: true
-      ## @param postgresql.primary.persistence.existingClaim Name of an existing PVC to use
-      ##
-      existingClaim: ""
-      ## @param postgresql.primary.persistence.storageClass PVC Storage Class for PostgreSQL Primary data volume
-      ## If defined, storageClassName: <storageClass>
-      ## If set to "-", storageClassName: "", which disables dynamic provisioning
-      ## If undefined (the default) or set to null, no storageClassName spec is
-      ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-      ##   GKE, AWS & OpenStack)
-      ##
-      storageClass: ""
-      ## @param postgresql.primary.persistence.accessModes PVC Access Mode for PostgreSQL volume
-      ##
-      accessModes:
-        - ReadWriteOnce
-      ## @param postgresql.primary.persistence.size PVC Storage Request for PostgreSQL volume
-      ##
-      size: 5Gi

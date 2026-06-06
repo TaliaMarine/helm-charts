@@ -34,9 +34,3 @@
 {{ printf "%s_ISSUER" .provider | upper }}
 {{- end }}
 
-{{/*
-  Authentication secret base name - will be suffixed with the configured provider
-*/}}
-{{- define "linkwarden.auth.secrets.base" -}}
-{{- printf "%s-auth" (include "linkwarden.fullname" .) }}
-{{- end }}

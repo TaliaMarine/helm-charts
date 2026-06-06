@@ -72,20 +72,6 @@ Set the names for the ConfigMaps
 {{- printf "%s-auth" (include "linkwarden.fullname" .) }}
 {{- end }}
 
-{{/*
-Set the names of the secrets
-*/}}
-{{- define "linkwarden.secrets.nextAuth" -}}
-{{- printf "%s-next-auth" (include "linkwarden.fullname" .) }}
-{{- end }}
-
-{{- define "linkwarden.secrets.s3" -}}
-{{- printf "%s-s3" (include "linkwarden.fullname" .) }}
-{{- end }}
-
-{{- define "linkwarden.secrets.db" -}}
-{{- printf "%s-db" (include "linkwarden.fullname" .) }}
-{{- end }}
 
 {{/*
 Define the PV name

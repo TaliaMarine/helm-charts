@@ -87,9 +87,8 @@ Parameters.
 | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------ |
 | `linkwarden.replicas`                           | The number of Linkwarden replicas (pods) to deploy                                                                                                     | `1`          |
 | `linkwarden.domain`                             | The domain name to assign to Linkwarden, to be re-used as the NextAuth URL and                                                                         | `""`         |
-| `linkwarden.nextAuthSecret.value`               | A secret string to encrypt JWTs and hash email verification tokens                                                                                     | `""`         |
 | `linkwarden.nextAuthSecret.existingSecret.name` | The name of an existing secret containing the secret string                                                                                            | `""`         |
-| `linkwarden.nextAuthSecret.existingSecret.key`  | The key within before mentioned secret containing the actual string                                                                                    | `""`         |
+| `linkwarden.nextAuthSecret.existingSecret.key`  | The key within before mentioned secret containing the actual string                                                                                    | `token`      |
 | `linkwarden.paginationTakeCount`                | The number of links to fetch every time you reach the bottom of the web page                                                                           | `20`         |
 | `linkwarden.autoscrollTimeout`                  | The amount of time to wait for the web page to be archived (in seconds).                                                                               | `30`         |
 | `linkwarden.rearchiveLimit`                     | Adjusts how often a user can trigger a new archive for each link (in minutes).                                                                         | `5`          |
@@ -109,16 +108,11 @@ Parameters.
 | `linkwarden.data.s3.endpoint`                   | The S3 endpoint to use                                                                                                                                 | `""`         |
 | `linkwarden.data.s3.region`                     | The AWS region the S3 bucket is located in                                                                                                             | `""`         |
 | `linkwarden.data.s3.forcePathStyle`             | Use path-style bucket addresses instead of AWS' DNS subdomain style                                                                                    | `false`      |
-| `linkwarden.data.s3.accessKey`                  | The S3 Access Key, to be used within a Kubernetes secret                                                                                               | `""`         |
-| `linkwarden.data.s3.secretKey`                  | The S3 Secret Key, to be used within a Kubernetes secret                                                                                               | `""`         |
 | `linkwarden.data.s3.existingSecret`             | The name of an existing Secret with `accessKey` and `secretKey` keys                                                                                   | `""`         |
-| `linkwarden.database.user`                      | The user for the PostgreSQL instance - ignored if 'existingSecret' or 'uri' is set                                                                     | `linkwarden` |
-| `linkwarden.database.password`                  | The password to the aforementioned user - ignored if 'existingSecret' or 'uri' is set                                                                  | `linkwarden` |
-| `linkwarden.database.host`                      | The hostname for the PostgreSQL instance - ignored if 'existingSecret' or 'uri' is set                                                                 | `""`         |
-| `linkwarden.database.port`                      | The port for the PostgreSQL instance - ignored if 'existingSecret' or 'uri' is set                                                                     | `5432`       |
-| `linkwarden.database.name`                      | The name for the PostgreSQL database - ignored if 'existingSecret' or 'uri' is set                                                                     | `linkwarden` |
-| `linkwarden.database.uri`                       | The URI for the PostgreSQL database - ignored if existingSecret is set                                                                                 | `""`         |
-| `linkwarden.database.existingSecret`            | The name of the existing secret containing the fully qualified PostgreSQL uri under a `uri` key                                                        | `""`         |
+| `linkwarden.database.host`                      | The hostname (FQDN) for the PostgreSQL instance                                                                                                        | `""`         |
+| `linkwarden.database.port`                      | The port for the PostgreSQL instance                                                                                                                   | `5432`       |
+| `linkwarden.database.name`                      | The name for the PostgreSQL database                                                                                                                   | `linkwarden` |
+| `linkwarden.database.existingSecret`            | The name of an existing secret containing the database credentials under the keys `username` and `password`                                            | `""`         |
 | `linkwarden.auth.disableRegistration`           | Disable registration for Linkwarden                                                                                                                    | `false`      |
 | `linkwarden.auth.enableCredentials`             | Enable credential logins for Linkwarden                                                                                                                | `true`       |
 | `linkwarden.auth.disableNewSSOUsers`            | Disable new SSO users                                                                                                                                  | `false`      |
@@ -253,25 +247,3 @@ Parameters.
 | `podSecurityContext` | Security context settings for the Linkwarden pod | `{}`  |
 | `securityContext`    | General security context settings for            | `{}`  |
 
-### Bitnami&reg; PostgreSQL parameters
-
-| Name                                 | Description                                                                                            | Value        |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------ |
-| `postgresql.enabled`                 | Enable or disable the PostgreSQL subchart                                                              | `true`       |
-| `postgresql.auth.enablePostgresUser` | Assign a password to the "postgres" admin user. Otherwise, remote access will be blocked for this user | `true`       |
-| `postgresql.auth.postgresPassword`   | Password for the "postgres" admin user. Ignored if `auth.existingSecret` is provided                   | `postgres`   |
-| `postgresql.auth.username`           | Name for a custom user to create                                                                       | `linkwarden` |
-| `postgresql.auth.password`           | Password for the custom user to create. Ignored if `auth.existingSecret` is provided                   | `linkwarden` |
-| `postgresql.auth.database`           | Name for a custom database to create                                                                   | `linkwarden` |
-| `postgresql.auth.usePasswordFiles`   | Mount credentials as a files instead of using an environment variable                                  | `false`      |
-
-### PostgreSQL Primary parameters
-
-| Name                                           | Description                                                    | Value               |
-| ---------------------------------------------- | -------------------------------------------------------------- | ------------------- |
-| `postgresql.primary.name`                      | Name of the primary database (eg primary, master, leader, ...) | `primary`           |
-| `postgresql.primary.persistence.enabled`       | Enable PostgreSQL Primary data persistence using PVC           | `true`              |
-| `postgresql.primary.persistence.existingClaim` | Name of an existing PVC to use                                 | `""`                |
-| `postgresql.primary.persistence.storageClass`  | PVC Storage Class for PostgreSQL Primary data volume           | `""`                |
-| `postgresql.primary.persistence.accessModes`   | PVC Access Mode for PostgreSQL volume                          | `["ReadWriteOnce"]` |
-| `postgresql.primary.persistence.size`          | PVC Storage Request for PostgreSQL volume                      | `5Gi`               |
