@@ -9,4 +9,5 @@ MIT [LICENSE](LICENSE)
 ## Charts
 
 - [NoteDiscovery](charts/note-discovery/README.md): A Helm chart for deploying the Note Discovery application.
+- [Dovecot](charts/dovecot/README.md): Dovecot 2.4 IMAPS server with passwd-file users, cert-manager TLS and a mail PVC.
 - [LinkWarden](charts/linkwarden/README.md): A Helm chart for deploying LinkWarden, a self-hosted password manager. Forked from https://github.com/fmjstudios/helm 
