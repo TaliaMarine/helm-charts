@@ -2,7 +2,7 @@ apiVersion: v2
 name: dovecot
 description: A Helm chart for Dovecot 2.4 (IMAPS) with passwd-file users, cert-manager TLS and a dynamically provisioned mail volume
 type: application
-version: 0.1.1
+version: 0.1.2
 appVersion: "2.4.5"
 home: https://github.com/dovecot/core
 sources:

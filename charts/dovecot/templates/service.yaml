@@ -7,6 +7,8 @@ metadata:
   {{- if or .Values.service.externalDnsHostname .Values.service.annotations }}
   annotations:
     {{- if .Values.service.externalDnsHostname }}
+    # external-dns >= 0.20 reads the new prefix only (legacy prefix disabled by default); older versions the alpha one.
+    external-dns.kubernetes.io/hostname: {{ .Values.service.externalDnsHostname | quote }}
     external-dns.alpha.kubernetes.io/hostname: {{ .Values.service.externalDnsHostname | quote }}
     {{- end }}
     {{- with .Values.service.annotations }}
