@@ -1,5 +1,25 @@
 apiVersion: v1
 entries:
+  dovecot:
+  - apiVersion: v2
+    appVersion: 2.4.5
+    created: "2026-11-19T15:15:20.161812996Z"
+    description: A Helm chart for Dovecot 2.4 (IMAPS) with passwd-file users, cert-manager
+      TLS and a dynamically provisioned mail volume
+    digest: 7c88965228dc660792fb3d6034d626f616ea0ce5ed2c97e2f8b030e4e87f8d9a
+    home: https://github.com/dovecot/core
+    keywords:
+    - dovecot
+    - imap
+    - mail
+    name: dovecot
+    sources:
+    - https://github.com/dovecot
+    - https://github.com/TaliaMarine/helm-charts/tree/main/charts/dovecot
+    type: application
+    urls:
+    - https://github.com/TaliaMarine/helm-charts/releases/download/dovecot-0.1.0/dovecot-0.1.0.tgz
+    version: 0.1.0
   linkwarden:
   - apiVersion: v2
     appVersion: 2.13.5
@@ -358,4 +378,4 @@ entries:
     urls:
     - https://github.com/TaliaMarine/helm-charts/releases/download/note-discovery-0.0.3/note-discovery-0.0.3.tgz
     version: 0.0.3
-generated: "2026-06-06T13:38:15.232609216Z"
+generated: "2026-11-19T15:15:20.161839486Z"
