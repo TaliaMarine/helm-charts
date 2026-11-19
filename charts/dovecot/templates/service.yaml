@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dovecot.fullname" . }}
+  labels:
+    {{- include "dovecot.labels" . | nindent 4 }}
+  {{- if or .Values.service.externalDnsHostname .Values.service.annotations }}
+  annotations:
+    {{- if .Values.service.externalDnsHostname }}
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.service.externalDnsHostname | quote }}
+    {{- end }}
+    {{- with .Values.service.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  {{- if and (eq .Values.service.type "LoadBalancer") .Values.service.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
+  {{- end }}
+  selector:
+    {{- include "dovecot.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: imaps
+      port: {{ .Values.service.portImaps }}
+      targetPort: imaps
+      protocol: TCP
+      {{- if and (eq .Values.service.type "NodePort") .Values.service.nodePortImaps }}
+      nodePort: {{ .Values.service.nodePortImaps }}
+      {{- end }}

@@ -1,0 +1,5 @@
+Dovecot {{ .Chart.AppVersion }} listens for IMAPS on {{ .Values.config.hostname }}:{{ .Values.service.portImaps }}.
+
+Users: Secret "{{ .Values.users.secretName }}", key "{{ .Values.users.key }}", one "user:{SCHEME}hash" per line
+(create the hash with: docker run --rm -it dovecot/dovecot doveadm pw -s {{ .Values.config.passwordScheme }}).
+The Secret is mounted as a directory: changes are picked up without a restart after the kubelet sync (~1 min).

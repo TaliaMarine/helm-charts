@@ -1,0 +1,21 @@
+{{- if .Values.certificate.enabled }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "dovecot.fullname" . }}
+  labels:
+    {{- include "dovecot.labels" . | nindent 4 }}
+spec:
+  secretName: {{ .Values.certificate.secretName }}
+  issuerRef:
+    name: {{ .Values.certificate.issuerRef.name }}
+    kind: {{ .Values.certificate.issuerRef.kind }}
+  {{- with .Values.certificate.commonName }}
+  commonName: {{ . | quote }}
+  {{- end }}
+  dnsNames:
+    {{- toYaml (default (list .Values.config.hostname) .Values.certificate.dnsNames) | nindent 4 }}
+  {{- with .Values.certificate.extraSpec }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+{{- end }}

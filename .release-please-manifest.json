@@ -1,5 +1,5 @@
 {
   "charts/note-discovery": "0.0.7",
-  "charts/linkwarden": "0.4.0"
+  "charts/linkwarden": "0.4.0",
+  "charts/dovecot": "0.1.0"
 }
-

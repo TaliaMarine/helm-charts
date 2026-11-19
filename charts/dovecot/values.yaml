@@ -1,0 +1,126 @@
+# Dovecot 2.4 as an IMAPS server. Users come from a passwd-file Secret (managed by hand or by dovecot-usermanager),
+# TLS from cert-manager, mail (Maildir) lives on one PVC.
+
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  repository: dovecot/dovecot
+  # The "-root" variant binds the standard ports (imaps=993) and is what the Service targets by default. The rootless
+  # image listens on 31993 instead (set service.targetPortImaps if you switch to it).
+  tag: 2.4.5-root
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+# Mail is on a ReadWriteOnce volume, so there is exactly one replica and the Deployment recreates (never surges).
+replicaCount: 1
+
+service:
+  type: LoadBalancer
+  portImaps: 993
+  targetPortImaps: 993
+  # Only for type NodePort.
+  nodePortImaps: null
+  # Fixed address for Cilium LB-IPAM / MetalLB; empty = let the pool pick one.
+  loadBalancerIP: ""
+  # external-dns hostname (Services of type LoadBalancer with this annotation are published).
+  externalDnsHostname: ""
+  annotations: {}
+
+config:
+  # Name Dovecot presents (hostname setting).
+  hostname: dovecot.example.com
+  # Dovecot 2.4 mailbox settings (replace mail_location).
+  mailDriver: maildir
+  mailHome: /srv/vmail/%{user}
+  mailPath: ~/mail
+  # uid/gid of the vmail user in the image (the container runs the master as root, workers drop to vmail).
+  vmailUser: vmail
+  # Scheme used for passwords without a {SCHEME} prefix. Hashes in the passwd-file normally carry their own prefix.
+  passwordScheme: ARGON2ID
+  # Extra lines appended verbatim to 99-k8s.conf (Dovecot 2.4 syntax).
+  extra: ""
+
+logging:
+  # Dovecot logs to stdout either way. Enable the flags below only when debugging.
+  verboseProctitle: false
+  authVerbose: false
+  authDebug: false
+  mailDebug: false
+  # Dovecot 2.4 log_debug filters, e.g. "category=auth".
+  logDebug: []
+
+persistence:
+  enabled: true
+  # Use an existing claim instead of creating one.
+  existingClaim: ""
+  # Empty = the cluster default StorageClass; "-" = no class (static binding).
+  storageClass: ""
+  accessModes:
+    - ReadWriteOnce
+  size: 30Gi
+  annotations: {}
+  # Keep the PVC when the release is uninstalled (adds helm.sh/resource-policy: keep).
+  keep: true
+  mountPath: /srv/vmail
+
+users:
+  # Secret holding the passwd-file ({user}:{SCHEME}hash per line). It is mounted as a DIRECTORY, so edits show up in the
+  # pod after the kubelet sync (about a minute) and Dovecot rereads the file when it changes: no restart needed.
+  secretName: dovecot-users
+  key: passwd
+  mountPath: /etc/dovecot/users
+  # The pod starts even when the Secret does not exist yet (nobody can log in until it does).
+  optional: true
+
+tls:
+  enabled: true
+  secretName: dovecot-tls
+  mountPath: /etc/dovecot/ssl
+  # Group-readable so the non-root workers (fsGroup) can read tls.key.
+  defaultMode: 0440
+
+certificate:
+  enabled: false
+  secretName: dovecot-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: ""
+  dnsNames: []
+  # Extra spec fields passed through (duration, renewBefore, privateKey, ...).
+  extraSpec: {}
+
+# The master process needs root (it binds 993, manages workers and drops privileges per service). The default container
+# capability set is enough; nothing is added.
+podSecurityContext:
+  fsGroup: 1000
+  fsGroupChangePolicy: OnRootMismatch
+
+securityContext:
+  runAsUser: 0
+  runAsGroup: 0
+  runAsNonRoot: false
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false
+  seccompProfile:
+    type: RuntimeDefault
+
+probes:
+  liveness:
+    enabled: true
+    initialDelaySeconds: 10
+    periodSeconds: 20
+  readiness:
+    enabled: true
+    initialDelaySeconds: 5
+    periodSeconds: 10
+
+resources: {}
+
+podAnnotations: {}
+podLabels: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
