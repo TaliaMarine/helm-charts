@@ -29,13 +29,13 @@ data:
       passwd_file_path = {{ .Values.users.mountPath }}/{{ .Values.users.key }}
     }
 
-    # The file only carries user:hash. Without a fields {} block Dovecot logs "User X is missing userdb info".
-    userdb passwd-file {
-      passwd_file_path = {{ .Values.users.mountPath }}/{{ .Values.users.key }}
+    # Every user shares the same uid/gid/home pattern, so userdb is static and the passwd-file only carries passwords.
+    # (userdb passwd-file would reject "user:hash" lines with "missing userdb info" unless they end in empty columns.)
+    userdb static {
       fields {
-        uid:default = {{ .Values.config.vmailUser }}
-        gid:default = {{ .Values.config.vmailUser }}
-        home:default = {{ .Values.config.mailHome }}
+        uid = {{ .Values.config.vmailUser }}
+        gid = {{ .Values.config.vmailUser }}
+        home = {{ .Values.config.mailHome }}
       }
     }
 
